@@ -18,8 +18,8 @@ copy_from_repo 'config/database.yml', :repo => repo
 mysql_username = ask_wizard("Username for MySQL? (root)")
 mysql_password = ask_wizard("Password for MySQL?")
 
-mysql_username ||= "root"
-mysql_password ||= ""
+mysql_username = "root" if mysql_username.blank?
+mysql_password = ""     if mysql_password.blank?
 
 
 gsub_file "config/database.yml", /username: .*/, "username: #{mysql_username}"
