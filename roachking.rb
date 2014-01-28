@@ -172,6 +172,10 @@ after_everything do
 
 
   copy_from_repo 'app/models/setting.rb', :repo => repo
+  copy_from_repo 'config/config.yml', :repo => repo
+  gsub_file "config/config.yml", /app_name: .*/, "app_name: #{app_const}"
+  gsub_file "config/config.yml", /domain: .*/, "domain: #{app_name}.dev"
+
   git :add => '-A'
   git :commit => '-qm "Add Setting model"'
 
