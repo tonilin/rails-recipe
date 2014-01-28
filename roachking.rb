@@ -7,7 +7,7 @@ mysql_password = ""     if mysql_password.blank?
 
 
 
-copy_from '#{repo}/gitignore.txt', '.gitignore'
+copy_from "#{repo}/gitignore.txt", '.gitignore'
 git :init
 git :add => '-A'
 git :commit => '-qm "initial commit"'
