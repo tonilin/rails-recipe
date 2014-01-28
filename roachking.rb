@@ -156,6 +156,16 @@ after_everything do
 
   copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
   copy_from_repo 'app/views/home/index.html.erb', :repo => repo
+  git :add => '-A'
+  git :commit => '-qm "Add home index"'
+
+
+  copy_from_repo 'config/routes.rb', :repo => repo
+  # CORRECT APPLICATION NAME
+  gsub_file 'config/routes.rb', /^.*.routes.draw do/, "#{app_const}.routes.draw do"
+  git :add => '-A'
+  git :commit => '-qm "Setting routes"'
+
 
 end
 
