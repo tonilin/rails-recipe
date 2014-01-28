@@ -1,10 +1,13 @@
+repo = 'https://raw.github.com/tonilin/rails_recipe/master/'
+
+
 copy_from 'https://raw.github.com/RailsApps/rails-composer/master/files/gitignore.txt', '.gitignore'
 git :init
 git :add => '-A'
 git :commit => '-qm "initial commit"'
 
-create_file '.ruby-version', "2.0.0p247\n"
-create_file '.powrc', "2.0.0p247\n"
+copy_from_repo '.ruby-version', :repo => repo
+copy_from_repo '.powrc', :repo => repo
 
 
 
