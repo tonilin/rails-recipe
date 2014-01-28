@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag "application" %>
   <%= csrf_meta_tag %>
   <%= yield :stylesheets %>
+  <%= render :partial => "common/google_analytics" %>
 </head>
 <body>
   <header>
@@ -15,8 +18,12 @@
      <%= yield %>
   </main>
 
- 
-  <%= render :partial => "common/google_analytics" %>
+   <main role="main" class="container">
+      <div class="row">
+        <%= yield %>
+      </div> 
+  </div>
+
 
   <%= javascript_include_tag "application" %>
   <%= yield :javascripts %>
