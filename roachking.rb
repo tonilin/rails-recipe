@@ -6,10 +6,30 @@ git :init
 git :add => '-A'
 git :commit => '-qm "initial commit"'
 
+# Ruby version
 copy_from_repo '.ruby-version', :repo => repo
 copy_from_repo '.powrc', :repo => repo
+git :add => '-A'
+git :commit => '-qm "Add .ruby-version and .powrc"'
 
 
+# Database
+copy_from_repo 'config/database.yml', :repo => repo
+mysql_username = ask_wizard("Username for MySQL? (root)")
+mysql_password = ask_wizard("Password for MySQL?")
+
+mysql_username ||= "root"
+mysql_password ||= ""
+
+
+gsub_file "config/database.yml", /username: .*/, "username: #{mysql_username}"
+gsub_file "config/database.yml", /password:/, "password: #{mysql_password}"
+gsub_file "config/database.yml", /database: myapp_development/, "database: #{app_name}_development"
+gsub_file "config/database.yml", /database: myapp_test/,        "database: #{app_name}_test"
+gsub_file "config/database.yml", /database: myapp_production/,  "database: #{app_name}_production"
+
+git :add => '-A'
+git :commit => '-qm "Setting database"'
 
 # GEMSET
 
@@ -81,6 +101,7 @@ add_gem "timecop", :group => [:development, :test]
 # Tool
 add_gem "annotate", :group => [:development]
 add_gem "powder", :group => [:development]
+add_gem 'rails_layout', :group => [:development]
 
 
 git :add => '-A'
@@ -111,9 +132,26 @@ after_everything do
   gsub_file 'config/routes.rb', /  #.*\n/, "\n"
   gsub_file 'config/routes.rb', /\n^\s*\n/, "\n"
 
+
+
+
   git :add => '-A'
   git :commit => '-qm "Clean up"'
 
+
+  generate "devise:install"
+  generate "devise User"
+  generate "devise:views"
+
+  git :add => '-A'
+  git :commit => '-qm "Initial devise"'
+
+
+  generate "layout:install bootstrap3 --force"
+  generate "layout:navigation --force"
+  generate "layout:devise bootstrap3 --force"
+  git :add => '-A'
+  git :commit => '-qm "Add bootstrap3 view"'
 
 end
 
