@@ -7,7 +7,7 @@ mysql_password = ""     if mysql_password.blank?
 
 
 
-copy_from 'https://raw.github.com/RailsApps/rails-composer/master/files/gitignore.txt', '.gitignore'
+copy_from_repo '.gitignore', :repo => repo
 git :init
 git :add => '-A'
 git :commit => '-qm "initial commit"'
