@@ -153,6 +153,10 @@ after_everything do
   git :add => '-A'
   git :commit => '-qm "Add bootstrap3 view"'
 
+
+  copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
+  copy_from_repo 'app/views/home/index.html.erb', :repo => repo
+
 end
 
 
