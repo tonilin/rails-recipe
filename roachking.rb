@@ -1,6 +1,6 @@
 repo = 'https://raw.github.com/tonilin/rails_recipe/master/'
 
-mysql_username = ask_wizard("Username for MySQL? (root)")
+mysql_username = ask_wizard("Username for MySQL? [root]")
 mysql_password = ask_wizard("Password for MySQL?")
 mysql_username = "root" if mysql_username.blank?
 mysql_password = ""     if mysql_password.blank?
@@ -151,6 +151,9 @@ after_everything do
   generate "layout:install bootstrap3 --force"
   generate "layout:navigation --force"
   generate "layout:devise bootstrap3 --force"
+
+  copy_from_repo 'app/views/layouts/application.html.erb', :repo => repo
+  copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
   git :add => '-A'
   git :commit => '-qm "Add bootstrap3 view"'
 
@@ -166,6 +169,12 @@ after_everything do
   gsub_file 'config/routes.rb', /^.*.routes.draw do/, "#{app_const}.routes.draw do"
   git :add => '-A'
   git :commit => '-qm "Setting routes"'
+
+
+  copy_from_repo 'app/models/setting.rb', :repo => repo
+  git :add => '-A'
+  git :commit => '-qm "Add Setting model"'
+
 
 
 end
