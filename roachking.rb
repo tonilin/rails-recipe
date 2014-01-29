@@ -51,7 +51,6 @@ add_gem 'font-awesome-rails', '~> 4.0.0'
 add_gem 'rails-i18n', '~> 4.0.0' # For 4.0.x
 add_gem 'will_paginate-bootstrap'
 add_gem 'high_voltage'
-add_gem "active_model_serializers"
 
 # Notification
 add_gem 'hipchat'
