@@ -136,6 +136,8 @@ after_everything do
   generate "layout:devise bootstrap3 --force"
 
   copy_from_repo 'app/views/layouts/application.html.erb', :repo => repo
+  copy_from_repo 'app/assets/javascripts/application.js', :repo => repo
+  copy_from_repo 'app/assets/stylesheets/application.css.scss', :repo => repo
   copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
 
 
