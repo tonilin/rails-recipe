@@ -1,6 +1,8 @@
 defaults: &defaults
   app_name: "myapp"
   domain: "http://myapp.dev"
+  description:
+  keywords:
   google_analytics_key:
   default_logo_url: "/images/logo.png"
   email_sender: ""

@@ -130,7 +130,7 @@ after_everything do
   copy_from_repo 'app/assets/stylesheets/application.css.scss', :repo => repo
   copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
 
-
+  copy_from_repo 'app/controllers/application_controller.rb', :repo => repo
   copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
   copy_from_repo 'app/views/home/index.html.erb', :repo => repo
 
