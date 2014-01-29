@@ -19,7 +19,6 @@ copy_from_repo '.powrc', :repo => repo
 # Database
 copy_from_repo 'config/database.yml', :repo => repo
 
-
 gsub_file "config/database.yml", /username: .*/, "username: #{mysql_username}"
 gsub_file "config/database.yml", /password:/, "password: #{mysql_password}"
 gsub_file "config/database.yml", /database: myapp_development/, "database: #{app_name}_development"
@@ -117,20 +116,12 @@ after_everything do
   gsub_file 'Gemfile', /\n^\s*\n/, "\n"
 
 
-  # remove commented lines and multiple blank lines from config/routes.rb
-  gsub_file 'config/routes.rb', /  #.*\n/, "\n"
-  gsub_file 'config/routes.rb', /\n^\s*\n/, "\n"
-
-
-
-
+  # Install devise
   generate "devise:install"
   generate "devise User"
   generate "devise:views"
 
-
-
-
+  # Layout
   generate "layout:install bootstrap3 --force"
   generate "layout:navigation --force"
   generate "layout:devise bootstrap3 --force"
@@ -145,13 +136,13 @@ after_everything do
   copy_from_repo 'app/views/home/index.html.erb', :repo => repo
 
 
-
+  # Routing
   copy_from_repo 'config/routes.rb', :repo => repo
   # CORRECT APPLICATION NAME
   gsub_file 'config/routes.rb', /^.*.routes.draw do/, "#{app_const}.routes.draw do"
 
 
-
+  # Settings
   copy_from_repo 'app/models/setting.rb', :repo => repo
   copy_from_repo 'config/config.yml', :repo => repo
   gsub_file "config/config.yml", /app_name: .*/, "app_name: #{app_name}"
@@ -170,8 +161,6 @@ after_everything do
   copy_from_repo 'config/recipes/rails/log.rb', :repo => repo
   gsub_file "config/deploy.rb", /myapp/, "#{app_name}"
   gsub_file "config/unicorn.rb", /myapp/, "#{app_name}"
-
-
 
 
 
