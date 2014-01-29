@@ -9,14 +9,11 @@ mysql_password = ""     if mysql_password.blank?
 
 copy_from "#{repo}/gitignore.txt", '.gitignore'
 git :init
-git :add => '-A'
-git :commit => '-qm "initial commit"'
+
 
 # Ruby version
 copy_from_repo '.ruby-version', :repo => repo
 copy_from_repo '.powrc', :repo => repo
-git :add => '-A'
-git :commit => '-qm "Add .ruby-version and .powrc"'
 
 
 # Database
@@ -28,9 +25,6 @@ gsub_file "config/database.yml", /password:/, "password: #{mysql_password}"
 gsub_file "config/database.yml", /database: myapp_development/, "database: #{app_name}_development"
 gsub_file "config/database.yml", /database: myapp_test/,        "database: #{app_name}_test"
 gsub_file "config/database.yml", /database: myapp_production/,  "database: #{app_name}_production"
-
-git :add => '-A'
-git :commit => '-qm "Setting database"'
 
 # GEMSET
 
@@ -105,21 +99,15 @@ add_gem "powder", :group => [:development]
 add_gem 'rails_layout', :group => [:development]
 
 
-git :add => '-A'
-git :commit => '-qm "Add gems"'
 
 after_bundler do
   generate 'simple_form:install --bootstrap'
-  git :add => '-A'
-  git :commit => '-qm "Setting simple form"'
 
 
   # Figaro
   generate 'figaro:install'
   gsub_file 'config/application.yml', /# PUSHER_.*\n/, ''
   gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
-  git :add => '-A'
-  git :commit => '-qm "Setting figaro"'
 end
 
 after_everything do
@@ -136,16 +124,11 @@ after_everything do
 
 
 
-  git :add => '-A'
-  git :commit => '-qm "Clean up"'
-
-
   generate "devise:install"
   generate "devise User"
   generate "devise:views"
 
-  git :add => '-A'
-  git :commit => '-qm "Initial devise"'
+
 
 
   generate "layout:install bootstrap3 --force"
@@ -154,21 +137,17 @@ after_everything do
 
   copy_from_repo 'app/views/layouts/application.html.erb', :repo => repo
   copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
-  git :add => '-A'
-  git :commit => '-qm "Add bootstrap3 view"'
 
 
   copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
   copy_from_repo 'app/views/home/index.html.erb', :repo => repo
-  git :add => '-A'
-  git :commit => '-qm "Add home index"'
+
 
 
   copy_from_repo 'config/routes.rb', :repo => repo
   # CORRECT APPLICATION NAME
   gsub_file 'config/routes.rb', /^.*.routes.draw do/, "#{app_const}.routes.draw do"
-  git :add => '-A'
-  git :commit => '-qm "Setting routes"'
+
 
 
   copy_from_repo 'app/models/setting.rb', :repo => repo
@@ -176,10 +155,19 @@ after_everything do
   gsub_file "config/config.yml", /app_name: .*/, "app_name: #{app_name}"
   gsub_file "config/config.yml", /domain: .*/, "domain: #{app_name}.dev"
 
+
+
+  # Deploy recipe
+  copy_from_repo 'config/deploy.rb', :repo => repo
+  copy_from_repo 'config/unicorn.rb', :repo => repo
+  copy_from_repo 'Capfile', :repo => repo
+  gsub_file "config/deploy.rb", /myapp/, "#{app_name}"
+  gsub_file "config/unicorn.rb", /myapp/, "#{app_name}"
+
+
+
   git :add => '-A'
-  git :commit => '-qm "Add Setting model"'
-
-
+  git :commit => '-qm "Initial commit"'
 
 end
 
