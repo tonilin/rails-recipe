@@ -65,7 +65,7 @@ add_gem 'carrierwave-meta'
 
 # Deploy
 add_gem 'rvm-capistrano'
-add_gem 'unicorn', :group => [:production]
+add_gem 'unicorn'
 add_gem "capistrano", :group => [:development]
 add_gem "capistrano-ext", :group => [:development]
 add_gem "cape", :group => [:development]
