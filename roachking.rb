@@ -122,8 +122,14 @@ after_everything do
   generate "devise:views"
 
   # Layout
+
+  say_wizard "Generate bootstrap3 views"
   generate "layout:install bootstrap3 --force"
+
+  say_wizard "Generate navigation views"
   generate "layout:navigation --force"
+
+  say_wizard "Generate bootstrap3 devise views"
   generate "layout:devise bootstrap3 --force"
 
   copy_from_repo 'app/views/layouts/application.html.erb', :repo => repo
