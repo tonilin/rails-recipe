@@ -96,6 +96,12 @@ add_gem "annotate", :group => [:development]
 add_gem "powder", :group => [:development]
 add_gem 'rails_layout', :group => [:development]
 
+# remove commented lines and multiple blank lines from Gemfile
+# thanks to https://github.com/perfectline/template-bucket/blob/master/cleanup.rb
+gsub_file 'Gemfile', /#.*\n/, "\n"
+gsub_file 'Gemfile', /\n^\s*\n/, "\n"
+
+
 
 
 after_bundler do
@@ -109,11 +115,6 @@ after_bundler do
 end
 
 after_everything do
-  # remove commented lines and multiple blank lines from Gemfile
-  # thanks to https://github.com/perfectline/template-bucket/blob/master/cleanup.rb
-  gsub_file 'Gemfile', /#.*\n/, "\n"
-  gsub_file 'Gemfile', /\n^\s*\n/, "\n"
-
 
   # Install devise
   generate "devise:install"
