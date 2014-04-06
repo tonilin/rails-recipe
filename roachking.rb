@@ -51,6 +51,7 @@ add_gem 'font-awesome-rails', '~> 4.0.0'
 add_gem 'rails-i18n', '~> 4.0.0' # For 4.0.x
 add_gem 'will_paginate-bootstrap'
 add_gem 'high_voltage'
+add_gem 'button_link_to'
 
 # Notification
 add_gem 'hipchat'
@@ -126,16 +127,24 @@ after_everything do
   say_wizard "Generate bootstrap3 views"
   generate "layout:install bootstrap3 --force"
 
-  say_wizard "Generate navigation views"
-  generate "layout:navigation --force"
-
   say_wizard "Generate bootstrap3 devise views"
   generate "layout:devise bootstrap3 --force"
 
+  remove_file "app/views/layouts/_messages.html.erb"
+  remove_file "app/views/layouts/_navigation.html.erb"
+  remove_file "app/views/layouts/_navigation_links.html.erb"
+  remove_file "app/assets/javascripts/application.js"
+
   copy_from_repo 'app/views/layouts/application.html.erb', :repo => repo
-  copy_from_repo 'app/assets/javascripts/application.js', :repo => repo
+  copy_from_repo 'app/views/common/_navigation.html.erb', :repo => repo
+  copy_from_repo 'app/views/common/_user_nav.html.erb', :repo => repo
+  copy_from_repo 'app/views/common/_messages.html.erb', :repo => repo
+  copy_from_repo 'app/assets/javascripts/application.js.coffee', :repo => repo
   copy_from_repo 'app/assets/stylesheets/application.css.scss', :repo => repo
+  copy_from_repo 'app/assets/stylesheets/framework_and_overrides.css.scss', :repo => repo
   copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
+
+
 
   copy_from_repo 'app/controllers/application_controller.rb', :repo => repo
   copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
