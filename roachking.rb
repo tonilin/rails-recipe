@@ -37,7 +37,7 @@ add_gem 'meta-tags', '1.5.0', require: 'meta_tags'
 add_gem 'sitemap_generator'
 
 # Auth
-add_gem 'devise', '3.2.2'
+add_gem 'devise', '~> 3.2.2'
 add_gem 'omniauth'
 add_gem 'omniauth-facebook'
 
