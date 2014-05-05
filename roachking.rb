@@ -6,8 +6,7 @@ mysql_username = "root" if mysql_username.blank?
 mysql_password = ""     if mysql_password.blank?
 
 
-
-copy_from "#{repo}/gitignore.txt", '.gitignore'
+copy_from "#{repo}gitignore.txt", '.gitignore'
 git :init
 
 
