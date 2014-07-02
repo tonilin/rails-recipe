@@ -104,7 +104,7 @@ gsub_file 'Gemfile', /\n^\s*\n/, "\n"
 
 
 
-after_bundler do
+stage_two do
   generate 'simple_form:install --bootstrap'
 
 
@@ -114,7 +114,7 @@ after_bundler do
   gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
 end
 
-after_everything do
+stage_three do
 
   # Install devise
   generate "devise:install"
@@ -140,7 +140,8 @@ after_everything do
   copy_from_repo 'app/views/common/_messages.html.erb', :repo => repo
   copy_from_repo 'app/assets/javascripts/application.js.coffee', :repo => repo
   copy_from_repo 'app/assets/stylesheets/application.css.scss', :repo => repo
-  copy_from_repo 'app/assets/stylesheets/framework_and_overrides.css.scss', :repo => repo
+  copy_from_repo 'app/assets/stylesheets/auth.css.scss', :repo => repo
+  copy_from_repo 'app/assets/stylesheets/bootstrap_custom.css.scss', :repo => repo
   copy_from_repo 'app/views/common/_google_analytics.html.erb', :repo => repo
 
 
