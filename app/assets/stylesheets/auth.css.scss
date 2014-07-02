@@ -1,14 +1,3 @@
-// import the CSS framework
-@import "bootstrap";
-
-
-// apply styles to HTML elements
-// to make views framework-neutral
-main {
-  @extend .container;
-  padding-bottom: 80px;
-  margin-top: 51px; // accommodate the navbar
-}
 
 // Styles for Devise views
 // using Bootstrap
