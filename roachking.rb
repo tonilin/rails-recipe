@@ -169,7 +169,6 @@ stage_three do
   copy_from_repo 'config/deploy.rb', :repo => repo
   copy_from_repo 'config/unicorn.rb', :repo => repo
   copy_from_repo 'Capfile', :repo => repo
-  copy_from_repo 'config/recipes/rails/log.rb', :repo => repo
   gsub_file "config/deploy.rb", /myapp/, "#{app_name}"
   gsub_file "config/unicorn.rb", /myapp/, "#{app_name}"
 
