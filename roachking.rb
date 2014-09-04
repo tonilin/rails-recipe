@@ -42,7 +42,7 @@ add_gem 'omniauth'
 add_gem 'omniauth-facebook'
 
 # View
-add_gem 'bootstrap-sass', '~> 3.0.3.0'
+add_gem 'bootstrap-sass'
 add_gem 'simple_form', "~> 3.0.1"
 add_gem 'will_paginate', "3.0.3"
 add_gem 'active_link_to'
