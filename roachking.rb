@@ -31,10 +31,10 @@ gsub_file 'Gemfile', /gem 'sqlite3'\n/, ''
 add_gem 'mysql2'
 
 # SEO
-add_gem 'friendly_id', '~> 5.0.0'
-add_gem 'babosa'
+# add_gem 'friendly_id', '~> 5.0.0'
+# add_gem 'babosa'
 add_gem 'meta-tags', '1.5.0', require: 'meta_tags'
-add_gem 'sitemap_generator'
+# add_gem 'sitemap_generator'
 
 # Auth
 add_gem 'devise', '~> 3.2.2'
