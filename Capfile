@@ -3,5 +3,3 @@ load 'deploy'
 load 'deploy/assets'
 load 'config/deploy'
 
-
-Dir["config/recipes/*/*.rb"].each {|file| load file }
