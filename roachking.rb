@@ -43,10 +43,10 @@ add_gem 'omniauth-facebook'
 
 # View
 add_gem 'bootstrap-sass'
-add_gem 'simple_form', "~> 3.0.1"
-add_gem 'will_paginate', "3.0.3"
+add_gem 'simple_form'
+add_gem 'will_paginate'
 add_gem 'active_link_to'
-add_gem 'font-awesome-rails', '~> 4.0.0'
+add_gem 'font-awesome-rails'
 add_gem 'rails-i18n', '~> 4.0.0' # For 4.0.x
 add_gem 'will_paginate-bootstrap'
 add_gem 'high_voltage'
