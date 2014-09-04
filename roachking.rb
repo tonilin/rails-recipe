@@ -53,7 +53,6 @@ add_gem 'high_voltage'
 # add_gem 'button_link_to'
 
 # Notification
-add_gem 'hipchat'
 add_gem 'airbrake'
 
 
