@@ -112,8 +112,6 @@ stage_two do
 
   # Figaro
   run 'figaro:install'
-  gsub_file 'config/application.yml', /# PUSHER_.*\n/, ''
-  gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
 end
 
 stage_three do
