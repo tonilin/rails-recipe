@@ -108,7 +108,7 @@ stage_two do
 
 
   # Figaro
-  generate 'figaro:install'
+  run 'figaro:install'
   gsub_file 'config/application.yml', /# PUSHER_.*\n/, ''
   gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
 end
