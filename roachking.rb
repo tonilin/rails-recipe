@@ -63,12 +63,15 @@ add_gem 'carrierwave-meta'
 
 
 # Deploy
-add_gem 'rvm-capistrano'
 add_gem 'unicorn'
 add_gem "capistrano", :group => [:development]
-add_gem "capistrano-ext", :group => [:development]
+add_gem "capistrano-rails", :group => [:development]
+add_gem "capistrano-bundler", :group => [:development]
+add_gem "capistrano-rvm", :group => [:development]
+add_gem "capistrano-sidekiq", :group => [:development]
 add_gem "cape", :group => [:development]
-add_gem 'capistrano-unicorn', :require => false, :group => [:development]
+add_gem 'capistrano3-unicorn', :group => [:development]
+
 
 # Setting
 add_gem 'figaro'

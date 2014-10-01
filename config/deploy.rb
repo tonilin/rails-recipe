@@ -1,74 +1,76 @@
-# -*- encoding : utf-8 -*-
-
 raw_config = File.read("config/config.yml")
 APP_CONFIG = YAML.load(raw_config)
 
-require "./config/boot"
-require "bundler/capistrano"
-require "rvm/capistrano"
-require 'capistrano-unicorn'
-
-default_environment["PATH"] = "/opt/ruby/bin:/usr/local/bin:/usr/bin:/bin"
 
 set :application, "myapp"
-set :repository,  "git@github.com:user_name/#{application}.git"
-set :deploy_to, "/home/apps/#{application}"
 
-set :branch, "master"
+
 set :scm, :git
+set :repo_url, "git@github.com:oSolve/myapp.git"
+set :deploy_to, "/home/apps/myapp"
 
-set :user, "apps"
-set :group, "apps"
+set :rvm_type, :user                     # Defaults to: :auto
+set :rvm_ruby_version, '2.1.3'      # Defaults to: 'default'
 
-set :deploy_to, "/home/apps/#{application}"
-set :runner, "apps"
-set :deploy_via, :remote_cache
-set :use_sudo, false
-set :rvm_ruby_string, '2.1.3'
 
-set :hipchat_token, APP_CONFIG["production"]["hipchat_token"]
-set :hipchat_room_name, APP_CONFIG["production"]["hipchat_room_name"]
-set :hipchat_announce, false # notify users?
 
-role :web, "myapp.com"                          # Your HTTP server, Apache/etc
-role :app, "myapp.com"                         # This may be the same as your `Web` server
-role :db,  "myapp.com"   , :primary => true # This is where Rails migrations will run
+set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_dirs, %w{tmp/pids tmp/sockets public/uploads}
 
-set :deploy_env, "production"
-set :rails_env, "production"
-set :scm_verbose, true
 
+
+# set the locations that we will look for changed assets to determine whether to precompile
+set :assets_dependencies, %w(app/assets lib/assets vendor/assets Gemfile.lock)
+
+# clear the previous precompile task
+Rake::Task["deploy:assets:precompile"].clear_actions
+class PrecompileRequired < StandardError; end
 
 namespace :deploy do
+  namespace :assets do
+    desc "Precompile assets"
+    task :precompile do
+      on roles(fetch(:assets_roles)) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            begin
+              # find the most recent release
+              latest_release = capture(:ls, '-xr', releases_path).split[1]
 
-  desc "Restart passenger process"
-  task :restart, :roles => [:web], :except => { :no_release => true } do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-end
+              # precompile if this is the first deploy
+              raise PrecompileRequired unless latest_release
 
+              latest_release_path = releases_path.join(latest_release)
 
-namespace :my_tasks do
-  task :symlink, :roles => [:web] do
-    run "mkdir -p #{deploy_to}/shared/log"
-    run "mkdir -p #{deploy_to}/shared/pids"
-    
-    symlink_hash = {
-      "#{shared_path}/config/database.yml"   => "#{release_path}/config/database.yml",
-      "#{shared_path}/config/application.yml"   => "#{release_path}/config/application.yml",
-      "#{shared_path}/uploads"              => "#{release_path}/public/uploads",
-    }
+              # precompile if the previous deploy failed to finish precompiling
+              execute(:ls, latest_release_path.join('assets_manifest_backup')) rescue raise(PrecompileRequired)
 
-    symlink_hash.each do |source, target|
-      run "ln -sf #{source} #{target}"
+              fetch(:assets_dependencies).each do |dep|
+                # execute raises if there is a diff
+                execute(:diff, '-Naur', release_path.join(dep), latest_release_path.join(dep)) rescue raise(PrecompileRequired)
+              end
+
+              info("Skipping asset precompile, no asset diff found")
+
+              # copy over all of the assets from the last release
+              execute(:cp, '-r', latest_release_path.join('public', fetch(:assets_prefix)), release_path.join('public', fetch(:assets_prefix)))
+            rescue PrecompileRequired
+              execute(:rake, "assets:precompile") 
+            end
+          end
+        end
+      end
     end
   end
 end
 
 
-after "deploy:finalize_update", "my_tasks:symlink"
-
-after 'deploy:restart', 'unicorn:restart'  # app preloaded
 
 
-require 'airbrake/capistrano'
+after 'deploy:publishing', 'deploy:restart'
+namespace :deploy do
+  task :restart do
+    invoke 'unicorn:restart'
+  end
+end
+

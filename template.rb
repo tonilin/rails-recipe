@@ -115,7 +115,11 @@ def say_recipe(name); say "\033[1m\033[36m" + "recipe".rjust(10) + "\033[0m" + "
 def say_wizard(text); say_custom(@current_recipe || 'composer', text) end
 
 def ask_wizard(question)
-  ask "\033[1m\033[36m" + (@current_recipe || "prompt").rjust(10) + "\033[1m\033[36m" + "  #{question}\033[0m"
+  ask "\033[1m\033[36m" + ("option").rjust(10) + "\033[1m\033[36m" + "  #{question}\033[0m"
+end
+
+def whisper_ask_wizard(question)
+  ask "\033[1m\033[36m" + ("choose").rjust(10) + "\033[0m" + "  #{question}"
 end
 
 def yes_wizard?(question)
@@ -133,13 +137,13 @@ end
 def no_wizard?(question); !yes_wizard?(question) end
 
 def multiple_choice(question, choices)
-  say_custom('question', question)
+  say_custom('option', "\033[1m\033[36m" + "#{question}\033[0m")
   values = {}
   choices.each_with_index do |choice,i|
     values[(i + 1).to_s] = choice[1]
     say_custom( (i + 1).to_s + ')', choice[0] )
   end
-  answer = ask_wizard("Enter your selection:") while !values.keys.include?(answer)
+  answer = whisper_ask_wizard("Enter your selection:") while !values.keys.include?(answer)
   values[answer]
 end
 
@@ -356,12 +360,15 @@ add_gem 'carrierwave-meta'
 
 
 # Deploy
-add_gem 'rvm-capistrano'
 add_gem 'unicorn'
 add_gem "capistrano", :group => [:development]
-add_gem "capistrano-ext", :group => [:development]
+add_gem "capistrano-rails", :group => [:development]
+add_gem "capistrano-bundler", :group => [:development]
+add_gem "capistrano-rvm", :group => [:development]
+add_gem "capistrano-sidekiq", :group => [:development]
 add_gem "cape", :group => [:development]
-add_gem 'capistrano-unicorn', :require => false, :group => [:development]
+add_gem 'capistrano3-unicorn', :group => [:development]
+
 
 # Setting
 add_gem 'figaro'
