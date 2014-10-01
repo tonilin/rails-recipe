@@ -24,7 +24,7 @@ set :deploy_to, "/home/apps/#{application}"
 set :runner, "apps"
 set :deploy_via, :remote_cache
 set :use_sudo, false
-set :rvm_ruby_string, '2.1.2'
+set :rvm_ruby_string, '2.1.3'
 
 set :hipchat_token, APP_CONFIG["production"]["hipchat_token"]
 set :hipchat_room_name, APP_CONFIG["production"]["hipchat_room_name"]
